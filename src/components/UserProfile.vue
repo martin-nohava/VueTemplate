@@ -1,33 +1,16 @@
 <template>
   <div class="user-profile">
-    <div class="user-profile_user-panel">
-        <h1 class="user-profile_username">{{user.username}}</h1>
-        <div class="user-profile_admin-badge" v-if="user.isAdmin">
-            Admin
-        </div>
-        <div class="user-profile_follower-count">
-            <strong>Followers</strong> {{folowers}}
-        </div>
-        <!--@submit.prevent is disabling default event of form element and adding custom-->
-        <!--class exceeded is added when condition is met-->
-        <form class="user-profile_create-post" @submit.prevent="createNewPost" :class="{'exceeded': newPostCharacterCount > 69}">
-            <label for="newPost"><strong>New Post</strong> ({{newPostCharacterCount}}/69) </label>
-            <!--V-model is saving value of textfield to selected variable-->
-            <textarea id="newPost" rows="4" v-model="newPostContent"/>
-        
-            <div class="user-profile_create-post-type">
-                <label for="newPostType"><strong>Type:</strong></label>
-                <select id="newPostType" v-model="selectedPostType">
-                    <!--Using index of array as unique key parametr-->
-                    <option v-for="(option, index) in postTypes" :key="index" :value="option.value">
-                        {{option.name}}
-                    </option>
-                </select>
+    <div class="user-profile_sidebar">
+        <div class="user-profile_user-panel">
+            <h1 class="user-profile_username">{{user.username}}</h1>
+            <div class="user-profile_admin-badge" v-if="user.isAdmin">
+                Admin
             </div>
-            <button>
-                Post
-            </button>
-        </form>
+            <div class="user-profile_follower-count">
+                <strong>Followers: </strong> {{folowers}}
+            </div>
+        </div>
+        <CreatePostPanel @add-post="addPost"/>
     </div>
     <div class="user-profile_posts-wrapper">
        <PostItem 
@@ -43,28 +26,18 @@
 
 <script>
 import PostItem from './PostItem.vue';
+import CreatePostPanel from './CreatePostPanel';
 
 export default {
   name: 'UserProfile',
   components: {
-      PostItem
+      PostItem,
+      CreatePostPanel
   },
   //Function for storing and returning data of our application
   data() {
     return {
-        newPostContent: '',
-        selectedPostType: 'instant',
-        folowers: 0,
-        postTypes: [
-          {
-            value: 'draft',
-            name: 'Draft'
-          },
-          {
-            value: 'instant',
-            name: 'Instant Post'
-          }
-        ],
+    folowers: 0,
       //Temp user object
       user: {
         id: 1,
@@ -100,9 +73,6 @@ export default {
       //${} is used for formating text insted of this.user.firstName + this.user.lastName
       return `${this.user.firstName} ${this.user.lastName}`;
     },
-    newPostCharacterCount() {
-        return this.newPostContent.length;
-    }
   },
   methods: {
     followUser() {
@@ -111,15 +81,8 @@ export default {
     toggleFavourite(id) {
         console.log('Favorited post ' + id)
     },
-    createNewPost() {
-        if(this.newPostContent && this.selectedPostType !== 'draft') {
-            //This method is adding new Post object to the front of posts list
-            this.user.posts.unshift({
-                id: this.user.posts.length + 1,
-                content: this.newPostContent
-            })
-        }
-        this.newPostContent = '';
+    addPost(post) {
+        this.user.posts.unshift({id: this.user.posts.length + 1, content: post});
     }
   },
   //Methot that runs when the component is loaded for the first time
@@ -133,17 +96,17 @@ export default {
 .user-profile {
     display: grid;
     grid-template-columns: 1fr 3fr;
-    width: 100%;
+    grid-gap: 50px;
     padding: 50px 5%;
 
     .user-profile_user-panel {
         display: flex;
         flex-direction: column;
-        margin-right: 50px;
         padding: 20px;
         background-color: white;
         border-radius: 5px;
         border: 1px solid whitesmoke;
+        margin-bottom: auto;
 
         h1 {
             margin: 0;
@@ -178,6 +141,7 @@ export default {
     .user-profile_post-wrapper {
         display: grid;
         grid-gap: 10px;
+        margin-bottom: auto;
     }
 }
 </style>
