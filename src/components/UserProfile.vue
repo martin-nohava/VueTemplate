@@ -9,8 +9,9 @@
             <strong>Followers</strong> {{folowers}}
         </div>
         <!--@submit.prevent is disabling default event of form element and adding custom-->
-        <form class="user-profile_create-post" @submit.prevent="createNewPost">
-            <label for="newPost"><strong>New Post</strong></label>
+        <!--class exceeded is added when condition is met-->
+        <form class="user-profile_create-post" @submit.prevent="createNewPost" :class="{'exceeded': newPostCharacterCount > 69}">
+            <label for="newPost"><strong>New Post</strong> ({{newPostCharacterCount}}/69) </label>
             <!--V-model is saving value of textfield to selected variable-->
             <textarea id="newPost" rows="4" v-model="newPostContent"/>
         
@@ -98,6 +99,9 @@ export default {
     fullName() {
       //${} is used for formating text insted of this.user.firstName + this.user.lastName
       return `${this.user.firstName} ${this.user.lastName}`;
+    },
+    newPostCharacterCount() {
+        return this.newPostContent.length;
     }
   },
   methods: {
@@ -125,41 +129,55 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .user-profile {
     display: grid;
     grid-template-columns: 1fr 3fr;
     width: 100%;
     padding: 50px 5%;
-}
 
-.user-profile_user-panel {
-    display: flex;
-    flex-direction: column;
-    margin-right: 50px;
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-    border: 1px solid whitesmoke;
-}
+    .user-profile_user-panel {
+        display: flex;
+        flex-direction: column;
+        margin-right: 50px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 5px;
+        border: 1px solid whitesmoke;
 
-.user-profile_admin-badge {
-    background: navy;
-    color: white;
-    border-radius: 5px;
-    margin-right: auto;
-    padding: 0 10px;
-    font-weight: bold;
-}
+        h1 {
+            margin: 0;
+        }
 
-.user-profile_create-post {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid whitesmoke;
-    margin-top: 20px;
-}
+        .user-profile_admin-badge {
+            background: navy;
+            color: white;
+            border-radius: 5px;
+            margin-right: auto;
+            padding: 0 10px;
+            font-weight: bold;
+        }
 
-h1 {
-    margin: 0;
+        .user-profile_create-post {
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid whitesmoke;
+            margin-top: 20px;
+
+            &.exceeded {
+                color: red;
+                border-color: red;
+                button {
+                    background-color: red;
+                    border-color: red;
+                }
+            }
+        }
+    }  
+
+    .user-profile_post-wrapper {
+        display: grid;
+        grid-gap: 10px;
+    }
 }
 </style>

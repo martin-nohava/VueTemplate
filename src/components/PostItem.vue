@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .post-item {
     padding: 20px;
     margin: 10px;
@@ -42,14 +42,15 @@ export default {
     box-sizing: border-box;
     cursor: pointer;
     transition: all 0.25s ease;
-}
 
-.post-item:hover {
-    transform: scale(1.1, 1.1);
-}
+    &:hover {
+        transform: scale(1.1, 1.1);
+    }
 
-.post-item_user {
-    font-weight: bold;
+    .post-item_user {
+        font-weight: bold;
+    }
+
 }
 
 </style>
