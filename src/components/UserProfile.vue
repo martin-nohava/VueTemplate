@@ -8,6 +8,25 @@
         <div class="user-profile_follower-count">
             <strong>Followers</strong> {{folowers}}
         </div>
+        <!--@submit.prevent is disabling default event of form element and adding custom-->
+        <form class="user-profile_create-post" @submit.prevent="createNewPost">
+            <label for="newPost"><strong>New Post</strong></label>
+            <!--V-model is saving value of textfield to selected variable-->
+            <textarea id="newPost" rows="4" v-model="newPostContent"/>
+        
+            <div class="user-profile_create-post-type">
+                <label for="newPostType"><strong>Type:</strong></label>
+                <select id="newPostType" v-model="selectedPostType">
+                    <!--Using index of array as unique key parametr-->
+                    <option v-for="(option, index) in postTypes" :key="index" :value="option.value">
+                        {{option.name}}
+                    </option>
+                </select>
+            </div>
+            <button>
+                Post
+            </button>
+        </form>
     </div>
     <div class="user-profile_posts-wrapper">
        <PostItem 
@@ -32,7 +51,19 @@ export default {
   //Function for storing and returning data of our application
   data() {
     return {
-      folowers: 0,
+        newPostContent: '',
+        selectedPostType: 'instant',
+        folowers: 0,
+        postTypes: [
+          {
+            value: 'draft',
+            name: 'Draft'
+          },
+          {
+            value: 'instant',
+            name: 'Instant Post'
+          }
+        ],
       //Temp user object
       user: {
         id: 1,
@@ -75,6 +106,16 @@ export default {
     },
     toggleFavourite(id) {
         console.log('Favorited post ' + id)
+    },
+    createNewPost() {
+        if(this.newPostContent && this.selectedPostType !== 'draft') {
+            //This method is adding new Post object to the front of posts list
+            this.user.posts.unshift({
+                id: this.user.posts.length + 1,
+                content: this.newPostContent
+            })
+        }
+        this.newPostContent = '';
     }
   },
   //Methot that runs when the component is loaded for the first time
@@ -109,6 +150,13 @@ export default {
     margin-right: auto;
     padding: 0 10px;
     font-weight: bold;
+}
+
+.user-profile_create-post {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid whitesmoke;
+    margin-top: 20px;
 }
 
 h1 {
