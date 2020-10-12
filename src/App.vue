@@ -1,53 +1,16 @@
 <template>
   <div id="app">
-    {{user.username}} - {{fullName}} 
-    <strong>Followers</strong> 
-    {{folowers}}
-    <button @click="followUser">Follow</button>
+    <UserProfile></UserProfile>
   </div>
 </template>
 
 <script>
+import UserProfile from './components/UserProfile';
+
 export default {
   name: 'App',
-  //Function for storing and returning data of our application
-  data() {
-    return {
-      folowers: 0,
-      //Temp user object
-      user: {
-        id: 1,
-        username: '@martin_nohava',
-        firstName: 'Martin',
-        lastName: 'Nohava',
-        email: 'martin@nohava.cz',
-        isAdmin: true
-      }
-    }
-  },
-  //Watches a datapoint and when change is detected on that datapoint this method is executed
-  watch: {
-    folowers(newFollowerCount, oldFollowerCount) {
-      if (oldFollowerCount < newFollowerCount) {
-        console.log(`${this.user.username} has gained a follower! Congrats!`);
-      }
-    }
-  },
-  //Object for computed data
-  computed: {
-    fullName() {
-      //${} is used for formating text insted of this.user.firstName + this.user.lastName
-      return `${this.user.firstName} ${this.user.lastName}`;
-    }
-  },
-  methods: {
-    followUser() {
-      this.folowers++;
-    }
-  },
-  //Methot that runs when the component is loaded for the first time
-  mounted() {
-    this.followUser();
+  components: {
+    UserProfile
   }
 }
 </script>
@@ -58,8 +21,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  display: flex;
   flex-direction: column;
-  text-align: center;
+  min-height: 100vh;
+  background-color: beige;
 }
 </style>
