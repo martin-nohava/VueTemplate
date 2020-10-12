@@ -35,7 +35,6 @@ export default {
 <style lang="scss" scoped>
 .post-item {
     padding: 20px;
-    margin: 10px;
     background-color: white;
     border-radius: 5px;
     border: 1px solid whitesmoke;

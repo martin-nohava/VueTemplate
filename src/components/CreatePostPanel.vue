@@ -4,14 +4,14 @@
     <form class="create-post-panel" @submit.prevent="createNewPost" :class="{'exceeded': newPostCharacterCount > 69}">
         <label for="newPost"><strong>New Post</strong> ({{newPostCharacterCount}}/69) </label>
         <!--V-model is saving value of textfield to selected variable-->
-        <textarea id="newPost" rows="4" v-model="newPostContent"/>
+        <textarea id="newPost" rows="4" v-model="state.newPostContent"/>
     
         <div class="create-post-panel_submit">    
             <div class="create-post-type">
                 <label for="newPostType"><strong>Type:</strong></label>
-                <select id="newPostType" v-model="selectedPostType">
+                <select id="newPostType" v-model="state.selectedPostType">
                     <!--Using index of array as unique key parametr-->
-                    <option v-for="(option, index) in postTypes" :key="index" :value="option.value">
+                    <option v-for="(option, index) in state.postTypes" :key="index" :value="option.value">
                         {{option.name}}
                     </option>
                 </select>
@@ -24,10 +24,12 @@
 </template>
 
 <script>
+import {reactive, computed} from 'vue';
+//Created with composition API
 export default {
     name: 'CreatePostPanel',
-    data() {
-        return {
+    setup(props, ctx) {
+        const state = reactive({
             newPostContent: '',
             selectedPostType: 'instant',
             postTypes: [
@@ -39,22 +41,24 @@ export default {
                     value: 'instant',
                     name: 'Instant Post'
                 }
-            ],
-        }
-    },
-    computed: {
-        newPostCharacterCount() {
-        return this.newPostContent.length;
-        }
-    },
-    methods: {
-        createNewPost() {
-            if(this.newPostContent && this.selectedPostType !== 'draft') {
-                this.$emit('add-post', this.newPostContent)
+            ]
+        })
+
+        const newPostCharacterCount = computed(() => state.newPostContent.length)
+
+        function createNewPost() {
+            if(state.newPostContent && state.selectedPostType !== 'draft') {
+                ctx.emit('add-post', state.newPostContent)
             }
-            this.newPostContent = '';
-        },
-    }
+            state.newPostContent = '';
+        }
+        
+        return {
+            state,
+            newPostCharacterCount,
+            createNewPost
+        }
+    } 
 }
 </script>
 

@@ -138,7 +138,7 @@ export default {
         }
     }  
 
-    .user-profile_post-wrapper {
+    .user-profile_posts-wrapper {
         display: grid;
         grid-gap: 10px;
         margin-bottom: auto;
