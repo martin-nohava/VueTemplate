@@ -6,7 +6,7 @@
           Poster
         </div>
       </router-link>
-      <div class="navigation_user">
+      <div class="navigation_user" v-if="user">
         {{user.username}}
       </div>
     </nav>
@@ -16,17 +16,20 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import {useStore} from 'vuex';
 
 export default {
   name: 'App',
   components: {
     
   },
-  data() {
+  setup() {
+    const store = useStore();
+    const user = computed(() => store.state.user);
+
     return {
-      user: {
-        username: '@martin_nohava'
-      }
+      user
     }
   }
 }
