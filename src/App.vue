@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <nav>
-      <div class="navigation_logo">
-        Poster
-      </div>
+      <router-link to="/">
+        <div class="navigation_logo">
+          Poster
+        </div>
+      </router-link>
       <div class="navigation_user">
         {{user.username}}
       </div>
