@@ -8,17 +8,17 @@
         {{user.username}}
       </div>
     </nav>
-    <UserProfile></UserProfile>
+    <!--Whatever is active page will be rendered here-->
+    <router-view/>
   </div>
 </template>
 
 <script>
-import UserProfile from './components/UserProfile';
 
 export default {
   name: 'App',
   components: {
-    UserProfile
+    
   },
   data() {
     return {
